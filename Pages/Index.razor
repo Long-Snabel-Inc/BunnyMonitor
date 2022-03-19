@@ -1,6 +1,19 @@
 ﻿@page "/"
+@using BlazorGeolocation
+@inject BlazorGeolocationService BlazorGeolocationService
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
 
 <PageTitle>Index</PageTitle>
 
-<h1>HEY!</h1>
+<h1>Do you want to share your location? 😍</h1>
+<button @onclick="ShareGeolocation" class="btn btn-success">Share 🚀</button>
 
+@code {
+    protected async Task ShareGeolocation()
+    {
+        var location = await BlazorGeolocationService.GetPositionAsync();
+        var baseUrl = Configuration.GetValue<string>("ApiEndpoint");
+        await HttpClient.PostAsJsonAsync(baseUrl + "/Geolocation", location);
+    }
+}
