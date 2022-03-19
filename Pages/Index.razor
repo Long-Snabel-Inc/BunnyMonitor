@@ -3,6 +3,7 @@
 @inject BlazorGeolocationService BlazorGeolocationService
 @inject HttpClient HttpClient
 @inject IConfiguration Configuration
+@inject ILocalStorageService LocalStorageService
 
 <PageTitle>Index</PageTitle>
 
@@ -14,6 +15,7 @@
     {
         var location = await BlazorGeolocationService.GetPositionAsync();
         var baseUrl = Configuration.GetValue<string>("ApiEndpoint");
+        await HttpClient.AddAuthHeaderAsync(LocalStorageService);
         await HttpClient.PostAsJsonAsync(baseUrl + "/Geolocation", location);
     }
 }

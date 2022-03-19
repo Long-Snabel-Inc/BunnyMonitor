@@ -42,7 +42,7 @@
     </div>
     <br /><br />
 
-    <button type="submit" class="btn btn-success">Login</button>
+    <button type="submit" class="btn btn-success">Register</button>
 </EditForm>
 <small class="alert-warning">@Warning</small>
 
@@ -56,7 +56,7 @@
         var success = await AccountService.Register(User);
         if (success)
         {
-            NavMan.NavigateTo("/");
+            NavMan.NavigateTo("/", true);
         }
         else
         {

@@ -1,6 +1,7 @@
 ﻿using BunnyMonitor.Models;
 using System.Net.Http.Json;
 using Blazored.LocalStorage;
+using BunnyMonitor.Extensions;
 
 namespace BunnyMonitor.Services
 {
@@ -30,6 +31,7 @@ namespace BunnyMonitor.Services
 
         public async Task<bool> Login(Login user)
         {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
             var resp = await _httpClient.PostAsJsonAsync(_baseUrl + "/User/Authenticate", user);
             Console.WriteLine(await resp.Content.ReadAsStringAsync());
             if (resp.IsSuccessStatusCode)
@@ -43,6 +45,7 @@ namespace BunnyMonitor.Services
 
         public async Task<bool> Register(User user)
         {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
             var resp = await _httpClient.PostAsJsonAsync(_baseUrl + "/User/Register", user);
             if (resp.IsSuccessStatusCode)
             {
