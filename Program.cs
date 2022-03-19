@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BunnyMonitor;
 using BlazorGeolocation;
+using Blazored.LocalStorage;
+using BunnyMonitor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -11,4 +13,13 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddScoped<BlazorGeolocationService>();
 
-await builder.Build().RunAsync();
+builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddScoped<AccountService>();
+
+var host = builder.Build();
+
+var accountService = host.Services.GetRequiredService<AccountService>();
+await accountService.Initialize();
+
+await host.RunAsync();

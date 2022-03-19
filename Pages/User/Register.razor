@@ -1,0 +1,67 @@
+﻿@page "/User/Register"
+@inject AccountService AccountService
+@inject NavigationManager NavMan
+
+<EditForm Model=User OnValidSubmit=HandleValidSubmit>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col col-2">
+            <label for="userName">Username</label>
+        </div>
+        <div class="col">
+            <InputText class="form-control" name="userName" id="userName" @bind-Value=User.UserName />
+        </div>
+    </div>
+    <br /><br />
+    <div class="row">
+        <div class="col col-2">
+            <label for="password">Password</label>
+        </div>
+        <div class="col">
+            <InputText class="form-control" type="password" name="password" id="password" @bind-Value=User.Password />
+        </div>
+    </div>
+    <br /><br />
+    <div class="row">
+        <div class="col col-2">
+            <label for="fullName">Full Name</label>
+        </div>
+        <div class="col">
+            <InputText class="form-control" name="fullName" id="fullName" @bind-Value=User.FullName />
+        </div>
+    </div>
+    <br /><br />
+    <div class="row">
+        <div class="col col-2">
+            <label for="email">Email</label>
+        </div>
+        <div class="col">
+            <InputText class="form-control" type="email" name="email" id="email" @bind-Value=User.Email />
+        </div>
+    </div>
+    <br /><br />
+
+    <button type="submit" class="btn btn-success">Login</button>
+</EditForm>
+<small class="alert-warning">@Warning</small>
+
+@code {
+    protected User User { get; set; } = new();
+
+    protected string Warning;
+
+    protected async Task HandleValidSubmit()
+    {
+        var success = await AccountService.Register(User);
+        if (success)
+        {
+            NavMan.NavigateTo("/");
+        }
+        else
+        {
+            Warning = "Username is already taken";
+            StateHasChanged();
+        }
+    }
+}
