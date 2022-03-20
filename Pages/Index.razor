@@ -16,6 +16,6 @@
         var location = await BlazorGeolocationService.GetPositionAsync();
         var baseUrl = Configuration.GetValue<string>("ApiEndpoint");
         await HttpClient.AddAuthHeaderAsync(LocalStorageService);
-        await HttpClient.PostAsJsonAsync(baseUrl + "/Geolocation", location);
+        await HttpClient.PostAsJsonAsync(baseUrl + "/Location", location);
     }
 }
