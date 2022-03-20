@@ -55,5 +55,17 @@ namespace BunnyMonitor.Services
             }
             return false;
         }
+
+        public async Task<List<User>> AllUsers()
+        {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
+            var users = await _httpClient.GetFromJsonAsync<List<User>>(_baseUrl + "/User/AllUsers");
+            foreach (User user in users)
+            {
+                var score = await _httpClient.GetFromJsonAsync<double>(_baseUrl + $"/User/{user.Id}/Score");
+                user.Score = score;
+            }
+            return users;
+        }
     }
 }

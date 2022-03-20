@@ -22,6 +22,8 @@ namespace BunnyMonitor.Models
         [MinLength(1)]
         public string Password { get; set; }
 
+        public double Score { get; set; }
+
         public string Token { get; set; }
     }
 }

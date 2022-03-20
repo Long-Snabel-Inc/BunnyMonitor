@@ -1,0 +1,28 @@
+﻿@page "/Scoreboard"
+@inject AccountService AccountService
+
+@foreach(User user in Users)
+{
+    <div class="row">
+        <div class="col col-sm-3">
+            @user.UserName
+        </div>
+        <div class="col col-sm-7">
+            @user.FullName
+        </div>
+        <div class="col col-sm-2" style="color:@(user.Score > 0 ? "green" : "red");text-align:right;">
+            @user.Score
+        </div>
+    </div>
+}
+
+@code {
+    private List<User> Users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await AccountService.AllUsers();
+        StateHasChanged();
+
+    }
+}
