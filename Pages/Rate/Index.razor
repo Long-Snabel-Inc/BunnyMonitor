@@ -1,0 +1,56 @@
+﻿@page "/Rate"
+@using BlazorGeolocation
+@inject BlazorGeolocationService BlazorGeolocationService
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
+@inject ILocalStorageService LocalStorageService
+@inject AccountService AccountService
+@inject NavigationManager NavMan
+
+@if (HasSharedLocation)
+{
+    @if ((DateTime.Now.Subtract(LastUpdate).TotalMinutes > 5))
+    {
+        <h2>Vote for @ClosestUser.FullName (@ClosestUser.UserName)</h2>
+        @for(int i = 1; i <= 5; i++)
+        {
+            var j = i;
+            <button class="btn" @onclick="() => Star(j)"><span class="oi oi-star" style="color:yellow;font-weight:bold;font-size:30px;"></span></button>
+        }
+    }
+    else
+    {
+        <h2>You have already voted within the last 5 minutes</h2>
+    }
+}
+else
+{
+    <h2>Share your location to rate: <button class="btn btn-primary" @onclick="ShareGeolocation">Share 🚀</button></h2>
+}
+
+@code {
+    private bool HasSharedLocation;
+    private DateTime LastUpdate;
+    private User ClosestUser;
+
+
+    protected async Task ShareGeolocation()
+    {
+        var location = await BlazorGeolocationService.GetPositionAsync();
+        var baseUrl = Configuration.GetValue<string>("ApiEndpoint");
+        await HttpClient.AddAuthHeaderAsync(LocalStorageService);
+        await HttpClient.PostAsJsonAsync(baseUrl + "/Location", location);
+        HasSharedLocation = true;
+        LastUpdate = await AccountService.LastUpdate();
+        ClosestUser = await AccountService.ClosestUser();
+        Console.WriteLine((DateTime.Now.Subtract(LastUpdate).TotalMinutes));
+        Console.WriteLine(LastUpdate);
+        StateHasChanged();
+    }
+
+    public async Task Star(int i)
+    {
+        await AccountService.RateUser(i, ClosestUser.Id);
+        NavMan.NavigateTo("/Scoreboard");
+    }
+}

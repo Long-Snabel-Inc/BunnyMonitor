@@ -5,17 +5,16 @@
 @inject IConfiguration Configuration
 @inject ILocalStorageService LocalStorageService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Long Snabel</PageTitle>
 
-<h1>Do you want to share your location? 😍</h1>
-<button @onclick="ShareGeolocation" class="btn btn-success">Share 🚀</button>
+<h1 style="color:pink;">Welcome to Long Snabel</h1>
+<hr style="color:pink;height:3px;" />
 
-@code {
-    protected async Task ShareGeolocation()
-    {
-        var location = await BlazorGeolocationService.GetPositionAsync();
-        var baseUrl = Configuration.GetValue<string>("ApiEndpoint");
-        await HttpClient.AddAuthHeaderAsync(LocalStorageService);
-        await HttpClient.PostAsJsonAsync(baseUrl + "/Location", location);
-    }
-}
+<div class="row">
+    <div class="col">
+        <embed src="swagAppIcon.svg" style="max-height:80vh;display:inline-block;" />
+    </div>
+    <div class="col">
+        <img src="Sucking_brains.png" height="400px" />
+    </div>
+</div>

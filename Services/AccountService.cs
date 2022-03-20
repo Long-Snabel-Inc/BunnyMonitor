@@ -43,6 +43,11 @@ namespace BunnyMonitor.Services
             return false;
         }
 
+        public async Task Logout()
+        {
+            await _localStorageService.RemoveItemAsync("user");
+        }
+
         public async Task<bool> Register(User user)
         {
             await _httpClient.AddAuthHeaderAsync(_localStorageService);
@@ -67,5 +72,31 @@ namespace BunnyMonitor.Services
             }
             return users;
         }
+
+        public async Task<double> Score()
+        {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
+            return await _httpClient.GetFromJsonAsync<double>(_baseUrl + $"/User/{User.Id}/Score");
+        }
+
+        public async Task<DateTime> LastUpdate()
+        {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
+            return await _httpClient.GetFromJsonAsync<DateTime>(_baseUrl + $"/User/LastRating");
+        }
+
+        public async Task<User> ClosestUser()
+        {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
+            return await _httpClient.GetFromJsonAsync<User>(_baseUrl + $"/Location/ClosestUser");
+        }
+
+        public async Task RateUser(int i, int userId)
+        {
+            await _httpClient.AddAuthHeaderAsync(_localStorageService);
+            await _httpClient.GetFromJsonAsync<int>(_baseUrl + $"/User/Rate/{userId}/{i}");
+        }
+
+
     }
 }

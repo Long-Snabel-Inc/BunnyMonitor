@@ -1,11 +1,21 @@
 ﻿@page "/User"
 @inject AccountService AccountService
 
-Full Name:
-@AccountService.User.FullName
-<br />
-<br />
-Username:
-@AccountService.User.UserName
-<br />
-<br />
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+        <h5 class="card-title">Score: <span style="font-weight:bold;color:@(score > 0 ? "green" : "red")">@String.Format("{0:0.00}", score)</span></h5>
+        <p class="card-text">
+            Name: @AccountService.User.FullName
+            <br />Username: @AccountService.User.UserName
+        </p>
+    </div>
+</div>
+
+@code {
+    private double score;
+
+    protected override async Task OnInitializedAsync()
+    {
+        score = await AccountService.Score();
+    }
+}

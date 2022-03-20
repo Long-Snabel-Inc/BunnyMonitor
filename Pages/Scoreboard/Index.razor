@@ -1,23 +1,30 @@
 ﻿@page "/Scoreboard"
 @inject AccountService AccountService
 
-@foreach(User user in Users)
+@if (Users is null)
 {
-    <div class="row">
-        <div class="col col-sm-3">
-            @user.UserName
+    <Loader />
+}
+else
+{
+    @foreach (User user in Users.OrderByDescending(u => u.Score))
+    {
+        <div class="row">
+            <div class="col col-sm-3">
+                @user.UserName
+            </div>
+            <div class="col col-sm-7">
+                @user.FullName
+            </div>
+            <div class="col col-sm-2" style="color:@(user.Score > 0 ? "green" : "red");text-align:right;">
+                @user.Score
+            </div>
         </div>
-        <div class="col col-sm-7">
-            @user.FullName
-        </div>
-        <div class="col col-sm-2" style="color:@(user.Score > 0 ? "green" : "red");text-align:right;">
-            @user.Score
-        </div>
-    </div>
+    }
 }
 
 @code {
-    private List<User> Users = new();
+    private List<User> Users;
 
     protected override async Task OnInitializedAsync()
     {

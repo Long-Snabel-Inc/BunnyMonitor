@@ -62,3 +62,81 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
+.neobox {
+    background-color: white;
+    box-shadow: 12px 12px 64px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 2.5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+
+.loader-wrapper {
+    position: relative;
+    height: 100vh;
+}
+
+.loader {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    top: calc(50vh - 200px);
+    left: calc(50vw - 225px)
+}
+
+.dot {
+    position: absolute;
+    background-color: lightgrey;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    animation: color-me-in 2s ease infinite;
+    -webkit-animation: color-me-in 2s ease infinite;
+}
+
+#dot1 {
+    animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+}
+
+#dot2 {
+    animation-delay: -0.5s;
+    -webkit-animation-delay: -0.5s;
+}
+
+#dot3 {
+    animation-delay: -1s;
+    -webkit-animation-delay: -1s;
+}
+
+#dot4 {
+    animation-delay: -1.5s;
+    -webkit-animation-delay: -1.5s;
+}
+
+@keyframes color-me-in {
+    0%, 100% {
+        transform: translate(0);
+    }
+
+    25% {
+        transform: translate(300%);
+    }
+
+    50% {
+        transform: translate(300%, 300%);
+    }
+
+    75% {
+        transform: translate(0, 300%);
+    }
+}
